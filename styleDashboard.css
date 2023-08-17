@@ -1,0 +1,130 @@
+#userInfoContainer{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 50px;
+  flex-wrap: wrap;
+}
+
+#userImgInfo{
+  display: flex;
+  margin: 5px
+}
+
+#userImg{
+  max-height: 150px;
+  margin-right: 40px;
+}
+
+#userInfo{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+#userEditButtonContainer{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+#userEditButtonContainer .myButton{
+  margin: 20px;
+
+}
+
+h1{
+  font-size: 30px;
+  font-weight: 700;
+  margin: 0;
+  margin-bottom: 5px;
+}
+
+h2{
+  font-size: 20px;
+  color: #C1400C;
+  margin: 0;
+}
+
+@media (max-width: 600px) {
+  h1{
+    font-size: 20px;
+  }
+  
+  h2{
+    font-size: 15px;
+  }
+
+  #userImg{
+    max-height: 100px;
+    margin-right: 20px;
+  }
+
+  #userEditButtonContainer .myButton{
+    font-size: 10px;
+    margin: 10px;
+  }
+  
+}
+
+/* --------------- List Styling --------------- */
+
+.dashboardList{
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 50px;
+}
+
+.dashboardListEntry{
+  display: flex;
+  justify-content: space-between;
+  border: 4px solid #D67F12;
+  border-radius: 20px;
+  margin: 10px 0;
+  flex-wrap: wrap;
+}
+
+.dashboardListDetails{
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.dashboardListSerial{
+  display: flex;
+  align-items: center;
+  font-size: 40px;
+  font-weight: 700;
+  padding: 0 20px;
+  margin-left: 10px;
+}
+
+.dashboardListButtons{
+  display: flex;
+  align-items: center;
+  margin: 20px;
+}
+
+.dashboardListButtons .myButton{
+  display: flex;
+  align-items: center;
+  margin-right: 10px;
+}
+
+.dashboardListText{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 10px 20px;
+}
+
+.buttonContainer{
+  display: flex;
+  justify-content: center;
+}
+
+@media (max-width: 600px) {
+  .adminListDetails{
+    flex-direction: column;
+  }
+  
+}

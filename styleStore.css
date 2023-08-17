@@ -1,0 +1,72 @@
+#storeProductList{
+  display: flex;
+  flex-direction: column;
+}
+
+.storeProductEntry{
+  display: flex;
+  flex-wrap: wrap;
+  margin: 40px 0;
+  align-items: center;
+}
+
+.storeProductDetails{
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 10px;
+}
+
+.storeProductImg{
+  max-height: 220px;
+  border-radius: 10px;
+  margin-right: 30px;
+}
+
+.storeProductName{
+  margin: 0;
+  font-size: 40px;
+  font-weight: 700;
+}
+
+.storeProductPrice{
+  margin: 0;
+  font-size: 20px;
+  font-style: italic;
+  font-weight: 700;
+  color: #C1400C;
+}
+
+.productValue{
+  color: #C1400C;
+}
+
+.formContainer{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  margin-top: 10px;
+}
+
+.formContainer #inputQuantity{
+  height: 40px;
+  border-radius: 10px;
+  border-color: #6B180C;
+  padding: 10px;
+  font-size: 20px;
+  font-weight: 700;
+  color: #C1400C;
+  text-align: center;
+  width: 150px;
+  margin: 0 10px;
+}
+
+.formContainer label{
+  color:#6B180C;
+  font-size: 18px;
+  font-weight: 500;
+}
+
+.formContainer .myButton{
+  margin-top: 10px;
+  width: 200px;
+}

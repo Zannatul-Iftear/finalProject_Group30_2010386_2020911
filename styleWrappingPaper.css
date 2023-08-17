@@ -1,0 +1,83 @@
+#mockupContainer{
+  background-color: aqua;
+  display: flex;  
+}
+
+#mockupImg{
+  max-width: 100%;
+  margin-bottom: 20px;
+}
+
+#myRow h1{
+  font-weight: 700;
+}
+
+#wrappingPaperContainer{
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+#wrappingPaperOption img{
+  max-width: 24%;
+  padding: 10px;
+}
+
+@media (max-width: 1440px){
+  #wrappingPaperContainer img{
+    max-width: 33%;
+  }
+}
+
+@media (max-width: 1000px){
+  #wrappingPaperContainer img{
+    max-width: 50%;
+  }
+}
+
+#wrappingPaperForm{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 0;
+  margin: 0;
+}
+
+#wrappingOptionsContainer{
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.wrappingPaperOption{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: 24%;
+  padding: 10px;
+}
+
+@media (max-width: 1440px){
+  .wrappingPaperOption{
+    max-width: 33%;
+  }
+}
+
+@media (max-width: 1000px){
+  .wrappingPaperOption{
+    max-width: 50%;
+  }
+}
+
+
+.wrappingPaperOption img{
+  max-width: 100%;
+  padding-bottom: 20px;
+}
+
+.myRadioButton{
+  transform: scale(3);
+  margin-top: 10px;
+  margin-bottom: 30px;
+}

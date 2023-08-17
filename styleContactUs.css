@@ -1,0 +1,141 @@
+#contactInfoContainer{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-image: url(img/imgContactUs.png);
+  background-size: cover;
+  background-position: center;
+  width: 100%;
+  min-height: 900px;
+  background-repeat: no-repeat;
+  border-radius: 20px;
+  padding-top: 30px;
+}
+
+.contactInfo{
+  display: flex;
+  align-items: center;
+  width: 80%;
+  margin: 20px 0;
+}
+
+.contactInfo img{
+  max-height: 60px;
+  margin-right: 20px;
+}
+
+.contactInfo h1{
+  color: #ffffff;
+  font-size: 25px;
+  font-weight: 700;
+  margin: 0;
+}
+
+.contactInfo h2{
+  color: #ffffff;
+  font-size: 15px;
+  margin: 0;
+}
+
+.contactInfo a{
+  color: #ffffff;
+  font-size: 15px;
+  margin: 0;
+  font-style: italic;
+}
+
+@media only screen and (max-width: 600px) {
+  .contactInfo img{
+    max-height: 30px;
+    margin-right: 10px;
+  }
+  
+  .contactInfo h1{
+    font-size: 20px;
+  }
+  
+  .contactInfo h2{
+    font-size: 15px;
+    margin: 0;
+  }
+  
+  .contactInfo a{
+    font-size: 15px;
+  }
+  
+}
+
+ /* -------------- FEEDBACK FORM -------------- */
+
+.myRightCol{
+  display: flex;
+  align-items: center;
+  justify-content: center; 
+}
+
+.myForm h1{
+  text-align: center;
+  font-weight: 700;
+  color: #c1400c;
+  margin: 40px 0;
+}
+
+.myForm label{
+  display: flex;
+  align-items: center;
+  font-weight: 700;
+  text-transform: uppercase;
+  margin-bottom: 0px;
+  border-bottom: 0px;
+  border-radius: 0px;
+  padding: 25px 30px;
+  color: #C1400C;
+}
+
+.myForm input{
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+  font-style: italic;
+  padding: 25px 30px;
+}
+
+.myForm textarea{
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 0px;
+  font-style: italic;
+  padding: 25px 30px;
+}
+
+.br-0{
+  border-right: 0px;
+}
+
+.button-container {
+  display: flex;
+  justify-content: center;
+}
+
+#messageBox{
+  height: 150px;
+}
+
+#buttonContainer{
+  display: flex;
+  justify-content: center;
+  margin-top: 40px;
+}
+
+.myForm .myButton{
+  font-style: normal;
+  padding: 10px 20px;
+  text-transform: uppercase;
+  font-weight: 700;
+  border-radius: 50px;
+  border-color: transparent;
+}

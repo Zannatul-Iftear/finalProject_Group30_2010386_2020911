@@ -1,0 +1,74 @@
+#cartList{
+  display: flex;
+  flex-direction: column;
+}
+
+.cartEntry{
+  display: flex;
+  justify-content: space-between;
+  border: 4px solid #D67F12;
+  border-radius: 20px;
+  margin: 10px 0;
+  flex-wrap: wrap;
+}
+
+.cartDetails{
+  display: flex;
+}
+
+.cartSerial{
+  display: flex;
+  align-items: center;
+  font-size: 40px;
+  font-weight: 700;
+  padding: 0 20px;
+  margin-left: 10px;
+}
+
+.cartNamePrice{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 10px 20px 0 20px;
+}
+
+.cartName{
+  font-size: 30px;
+  font-weight: 700;
+  margin: 0;
+}
+
+.cartPrice, .quantity, .price{
+  font-size: 20px;
+  font-weight: 700;
+  color: #C1400C;
+}
+
+.cartButtons{
+  display: flex;
+  align-items: center;
+  margin: 20px;
+}
+
+.cartButtons .myButton{
+  display: flex;
+  align-items: center;
+  margin-right: 10px;
+}
+
+#totalLabel{
+  font-size: 50px;
+  font-weight: 700;
+  margin: 20px 0;
+}
+
+#totalLabel span{
+  font-style: italic;
+  color: #C1400C;
+}
+
+#checkboxLabel{
+  font-size: 20px;
+  padding-left: 10px;
+  margin-bottom: 40px;
+}
