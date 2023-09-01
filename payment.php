@@ -1,7 +1,39 @@
+<?php
+  session_start();
+  include 'calculateCartTotal.php';
+  include 'identifyUser.php';
+
+  $conn = mysqli_connect('localhost','root','','mishti_db') or die('connection failed');
+  if(isset($_POST['submit'])){
+    $userName=mysqli_real_escape_string($conn, $_POST['name']);
+    $address=mysqli_real_escape_string($conn, $_POST['address']);
+    $phone=mysqli_real_escape_string($conn, $_POST['phone']);
+    $total=$_SESSION['cart_total'];
 
 
 
+    $sql = "SELECT * FROM carts WHERE userID = '$userID'";
+    $result = $conn->query($sql);
+    $quantity = 0;
 
+    if ($result->num_rows > 0) {
+      while ($row = $result->fetch_assoc()) {
+        $quantity+=$row['quantity'];
+      }
+    } else {echo "No matching rows found.";}
+    
+    mysqli_query($conn, "INSERT INTO `orders`(userID, userName, address, phone, quantity, total) VALUES('$userID', '$userName', '$address', '$phone', '$quantity', '$total')") or die('query failed');
+    $deleteQuery = "DELETE FROM carts";
+    if ($conn->query($deleteQuery) === TRUE) {
+      //echo "Carts table cleared successfully!";
+    } else {
+      //echo "Error clearing carts table: " . $conn->error;
+    }
+    $conn->close();
+    header('location:test.php');
+  }
+
+?>
 
 
 
@@ -39,6 +71,19 @@
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
     <div id="navbarPlaceholder"></div>
+
+    <?php
+      if(isset($message)){
+         foreach($message as $message){
+            echo '
+            <div class="message">
+               <span>'.$message.'</span>
+               <i class="fas fa-times" onclick="this.parentElement.remove();"></i>
+            </div>
+            ';
+         }
+      }
+      ?>
     
     <div class="myContainer">
 
@@ -55,8 +100,14 @@
                   <input type="text" name="name" placeholder="Full Name" required class="box">
                   <input type="text" name="address" placeholder="Delivery Address" required class="box">
                   <input type="text" name="phone" placeholder="Phone Number" required class="box">
+                  <div id="displayinfo">
+                    <h1>Payment: <b id="payment"><?php echo $total; ?>tk</b></h1>
+                    <p>☑ Cash on delivery</p>
+                    <p><i>Online payment coming soon!</i></p>
+                  </div>
                 </div>
   
+                <!--
                 <div class="col md-6">
                   <h3>Payment Information:</h3>
                   <input type="text" name="cardname" placeholder="Card Name" required class="box">
@@ -65,8 +116,9 @@
                   <input type="number" name="month" placeholder="Month" required class="box2">
                   <span class="slash">/</span>
                   <input type="number" name="year" placeholder="Year" required class="box2">
-                  <p>Payment: <b id="payment">11450</b>tk</p>
+                  
                 </div>
+                -->
 
               </div>
 

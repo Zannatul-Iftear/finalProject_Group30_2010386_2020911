@@ -17,9 +17,11 @@
 }
 
 .storeProductImg{
-  max-height: 220px;
+  height: 220px;
+  width: 220px;
   border-radius: 10px;
   margin-right: 30px;
+  object-fit: cover;
 }
 
 .storeProductName{
@@ -69,4 +71,8 @@
 .formContainer .myButton{
   margin-top: 10px;
   width: 200px;
+}
+
+#successImg{
+  max-width: 256px;
 }

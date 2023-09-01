@@ -11,28 +11,34 @@ if(isset($_POST['submit'])){
    $select_users = mysqli_query($conn, "SELECT * FROM `users` WHERE email = '$email' AND password = '$pass'") or die('query failed');
 
    if(mysqli_num_rows($select_users) > 0){
-
       $row = mysqli_fetch_assoc($select_users);
-      $_SESSION['type'] = $row['user_type'];
+      $currentID=$row['userID'];
+      $updateQuery = "UPDATE carts SET userID = '$currentID'";
+      if ($conn->query($updateQuery) === TRUE) {
+         //echo "UserID updated successfully for all rows!";
+     } else {
+         //echo "Error updating userID: " . $conn->error;
+     }
+      $_SESSION['type'] = $row['type'];
 
-      if($row['user_type'] == 'admin'){
+      if($_SESSION['type'] == 'admin'){
 
          $_SESSION['admin_name'] = $row['name'];
          $_SESSION['admin_email'] = $row['email'];
-         $_SESSION['admin_id'] = $row['id'];
-         header('location:index.html');
+         $_SESSION['admin_id'] = $currentID;
+         header('location:admin_page.php');
 
-      }elseif($row['user_type'] == 'user'){
+      }elseif($_SESSION['type'] == 'user'){
 
          $_SESSION['user_name'] = $row['name'];
          $_SESSION['user_email'] = $row['email'];
-         $_SESSION['user_id'] = $row['id'];
+         $_SESSION['user_id'] = $currentID;
          header('location:index.html');
 
       }
 
    }else{
-      $message[] = 'incorrect email or password!';
+      $message[] = 'Incorrect email or password!';
    }
 
 }

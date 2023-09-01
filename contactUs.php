@@ -1,3 +1,37 @@
+<?php
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["submit"])) {
+  $fname=$_POST['fName'];
+  $lname=$_POST['lName'];
+  $email=$_POST['email'];
+  $phone=$_POST['phone'];
+  $message=$_POST['message'];
+  
+  $link = mysqli_connect("localhost","root","","mishti_db");
+  
+  if($link === false){
+      die("ERROR: Could not connect." . mysqli_connect_error());
+  }
+  
+  $sql = "INSERT INTO feedbacks 
+  (firstName,lastName,email,phone,message)
+  VALUES ('$fname','$lname','$email','$phone','$message')";
+  
+  if(mysqli_query($link,$sql)){
+      echo "Records added successfully.";
+  } else {
+      echo "ERROR: Could not be able to execute $sql." . mysqli_error($link);
+  
+  }
+  
+  mysqli_close($link);
+}
+
+
+
+
+
+?>
+
 <!doctype html>
 <html lang="en">
   <head>
@@ -68,7 +102,7 @@
             <div class="col-xl-6">
               <div class="myRightCol">
       
-                <form class="myForm" action="signup.php" method="POST">
+                <form class="myForm" action="contactUs.php" method="POST">
                   <h1>We'd love to hear your feedback!</h1>
       
                   <div class="form-group">
@@ -109,7 +143,7 @@
 
                   <div id="buttonContainer">
                     <input type="hidden" name="form_submitted" value="1"/>
-                    <input class="myButton" type="submit" value="Submit">
+                    <input class="myButton" name="submit" type="submit" value="Submit">
                   </div>
       
 

@@ -248,3 +248,12 @@ section{
    font-weight: 900;
    margin: 0 1rem;
 }
+
+#payment{
+   color:#C1400C;
+}
+
+#displayinfo p{
+   padding:0;
+   margin:0;
+}

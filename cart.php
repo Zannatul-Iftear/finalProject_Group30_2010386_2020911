@@ -1,3 +1,47 @@
+<?php
+  session_start();
+  include 'calculateCartTotal.php';
+  include 'identifyUser.php';
+
+  // --------------- REMOVE BUTTON ON CLICK ---------------
+
+  if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["deleteCartID"])) {
+    $deleteCartID = $_POST["deleteCartID"];
+    $conn = mysqli_connect('localhost','root','','mishti_db') or die('connection failed');
+    // Perform the deletion based on the deleteCartID
+    $deleteQuery = "DELETE FROM carts WHERE cartID = '$deleteCartID'";
+    if ($conn->query($deleteQuery) === TRUE) {
+        //echo "Row deleted successfully!";
+    } else {
+       // echo "Error deleting row: " . $conn->error;
+    }
+    $conn->close();
+  }
+
+  // --------------- PLUS/MINUS BUTTON ON CLICK ---------------
+
+  if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["updateCartID"]) && isset($_POST["action"])) {
+    $updateCartID = $_POST["updateCartID"];
+    $action = $_POST["action"];
+              
+    $conn = mysqli_connect('localhost','root','','mishti_db') or die('connection failed');
+    // Update the quantity based on the action
+    if ($action === "increment") {
+      $updateQuery = "UPDATE carts SET quantity = quantity + 1 WHERE cartID = '$updateCartID'";
+    } elseif ($action === "decrement") {
+      $updateQuery = "UPDATE carts SET quantity = quantity - 1 WHERE cartID = '$updateCartID' AND quantity > 0";
+    }
+              
+    if ($conn->query($updateQuery) === TRUE) {
+      //echo "Quantity updated successfully!";
+    } else {
+      //echo "Error updating quantity: " . $conn->error;
+    }
+    $conn->close();
+  }
+  include 'calculateCartTotal.php';
+?>
+
 <!doctype html>
 <html lang="en">
   <head>
@@ -31,6 +75,8 @@
           <p class="pageTitle">My Cart</p>
 
           <div id="cartList">
+
+            <!-- OLD Hardcoded Cart List
 
             <div class="cartEntry" id="roshogolla">
               <div class="cartDetails">
@@ -83,14 +129,79 @@
               </div>
             </div>
 
+            -->
+
+            <?php
+              // Create a new database connection
+              $conn = mysqli_connect('localhost','root','','mishti_db') or die('connection failed');
+
+              // SQL query to fetch cart data along with product details
+              $sql = "SELECT carts.cartID, carts.productID, carts.quantity, products.name, products.price
+                      FROM carts
+                      INNER JOIN products ON carts.productID = products.productID
+                      WHERE carts.userID = $userID";
+              $result = $conn->query($sql);
+
+              $serialNumber = 1;
+
+              if ($result->num_rows > 0) {
+                  while ($row = $result->fetch_assoc()) {
+                      $cartID = $row['cartID'];
+                      $name = $row['name'];
+                      $price = $row['price'];
+                      $quantity = $row['quantity'];
+                      $total = $price * $quantity;
+
+                      if($quantity==0) {continue;}
+
+                      echo '<div class="cartEntry" id="' . $cartID . '">';
+                      echo '<div class="cartDetails">';
+                      echo '<div class="cartSerial">' . sprintf('%02d', $serialNumber) . '</div>'; // Auto-increment from 01
+                      echo '<div class="cartNamePrice">';
+                      echo '<p class="cartName">' . $name . '</p>';
+                      echo '<p class="cartPrice">';
+                      echo '<span class="quantity">' . $quantity . '</span>kg: ';
+                      echo '<span class="price">' . $total . '</span>tk';
+                      echo '</p>';
+                      echo '</div>';
+                      echo '</div>';
+                      
+                      echo '<div class="cartButtons">';
+                      echo '<form method="post" action="cart.php">';
+                      echo '<input type="hidden" name="updateCartID" value="' . $cartID . '">';
+                      echo '<input type="hidden" name="action" value="increment">';
+                      echo '<button type="submit" class="myButton">+</button>';
+                      echo '</form>';
+                      echo '<form method="post" action="cart.php">';
+                      echo '<input type="hidden" name="updateCartID" value="' . $cartID . '">';
+                      echo '<input type="hidden" name="action" value="decrement">';
+                      echo '<button type="submit" class="myButton">-</button>';
+                      echo '</form>';
+                      echo '<form method="post" action="cart.php">';
+                      echo '<input type="hidden" name="deleteCartID" value="' . $cartID . '">';
+                      echo '<button type="submit" class="altButton" name="deleteButton">Remove</button>';
+                      echo '</form>';
+                      echo '</div>';
+                      echo '</div>';
+
+                      $serialNumber++;
+                  }
+              } else {
+                  echo '<p>No items in the cart.</p>';
+              }
+
+              // Close the database connection
+              $conn->close();
+            ?>
+
           </div>
 
           <p id="totalLabel">
             Total:
-            <span id="totalAmount">11450</span><span>tk</span>
+            <span id="totalAmount"><?php echo $_SESSION['cart_total']; ?></span><span>tk</span>
           </p>
 
-          <input type="checkbox" id="wrappingPaperCheckbox" name="wrappingPaperCheckbox">
+          <input type="checkbox" id="wrappingPaperCheckbox" name="wrappingPaperCheckbox" checked>
           <label for="wrappingPaperCheckbox" id="checkboxLabel">Include Wrapping Paper</label>
 
           <div class="bottomButtonContainer">
@@ -132,6 +243,13 @@
 // Attach a click event listener to the button
 document.getElementById("nextButton").addEventListener("click", function() {
     // Check if the checkbox is checked
+    <?php
+      if($_SESSION['cart_total']==0){
+        header('location:cart.php');
+      }
+    ?>
+
+
     var checkboxChecked = document.getElementById("wrappingPaperCheckbox").checked;
     
     // Define the target URL based on the checkbox status

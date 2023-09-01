@@ -1,3 +1,54 @@
+<?php
+  session_start();
+  include 'calculateCartTotal.php';
+  include 'identifyUser.php';
+  
+  if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["productID"]) && isset($_POST["quantity"])) {
+    $productID = $_POST["productID"];
+    $quantity = $_POST["quantity"];
+    //echo 'Dog<br>Dog<br>Dog<br>Dog<br>Dog<br>Dog<br>Dog<br>Dog<br>Dog<br>Dog<br>';
+
+    if($quantity>=1){
+
+      // ----------- ADDING/UPDATING QUANTITY OF PRODUCT IN CART ----------------
+
+      $conn = mysqli_connect('localhost','root','','mishti_db') or die('connection failed');
+      $sql = "SELECT * FROM carts WHERE userID = '$userID' AND productID = '$productID'";
+      $result = $conn->query($sql);
+
+      if ($result->num_rows > 0) {
+        // Row exists, update the quantity
+        $row = $result->fetch_assoc();
+        $existingQuantity = $row['quantity'];
+        $newQuantity = $existingQuantity + $quantity;
+    
+        // Update the quantity for the existing row
+        $updateQuery = "UPDATE carts SET quantity = '$newQuantity' WHERE userID = '$userID' AND productID = '$productID'";
+        if ($conn->query($updateQuery) === TRUE) {
+            //echo "Cart updated successfully!";
+        } else {
+            //echo "Error updating cart: " . $conn->error;
+        }
+      } else {
+          // Row doesn't exist, insert a new row
+          $insertQuery = "INSERT INTO carts (userID, productID, quantity) VALUES ('$userID', '$productID', '$quantity')";
+          if ($conn->query($insertQuery) === TRUE) {
+              //echo "Product added to cart successfully!";
+          } else {
+              //echo "Error adding product to cart: " . $conn->error;
+          }
+      }
+
+      //echo 'Dog<br>Dog<br>Dog<br>Dog<br>Dog<br>Dog<br>Dog<br>Dog<br>Dog<br>Dog<br>';
+      //echo $_SESSION['cart_total'];
+      $conn->close();
+    }
+  }
+  
+?>
+
+
+
 <!doctype html>
 <html lang="en">
   <head>
@@ -32,6 +83,8 @@
           <p class="pageDescription">We offer sweets that are best in class. With years of experience in the sweetmeat business we are confident that our products will keep you coming back for more.</p>
         
           <div id="storeProductList">
+
+            <!-- OLD Hardcoded Products List
 
             <div class="storeProductEntry" id="roshogolla">
               <img src="img/productImgRoshogolla.png" class="storeProductImg">
@@ -100,6 +153,45 @@
                 </form>
               </div>
             </div>
+            -->
+
+            <?php
+              $conn = mysqli_connect('localhost','root','','mishti_db') or die('connection failed');
+              $sql = "SELECT productID, name, price, image FROM `products`";
+              $result = $conn->query($sql);
+
+              if ($result->num_rows > 0) {
+                  while ($row = $result->fetch_assoc()) {
+                      $productID = $row["productID"];
+                      $name = $row["name"];
+                      $price = $row["price"];
+                      $image = $row["image"];
+
+                      echo '<div class="storeProductEntry" id="' . $productID . '">';
+                      echo '<img src="uploaded_img/' . $image . '" class="storeProductImg">';
+                      echo '<div class="storeProductDetails">';
+                      echo '<p class="storeProductName">' . $name . '</p>';
+                      echo '<p class="storeProductPrice">';
+                      echo '<span class="productValue">' . $price . '</span>tk per kg';
+                      echo '</p>';
+
+                      echo '<form class="formContainer" method="post" action="store.php">';
+                      echo '<div>';
+                      echo '<label for="inputQuantity">Quantity (kg):</label>';
+                      echo '<input type="number" id="inputQuantity" name="quantity" required>';
+                      echo '<input type="hidden" name="productID" value=' . $productID . '>';
+                      echo '</div>';
+                      echo '<button type="submit" class="myButton">Add to cart</button>';
+                      echo '</form>';
+                      
+                      echo '</div>';
+                      echo '</div>';
+                  }
+              } else {
+                  echo "No products found.";
+              }
+              $conn->close();
+            ?>
 
           </div>
 

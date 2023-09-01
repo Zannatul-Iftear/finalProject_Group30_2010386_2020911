@@ -1,5 +1,5 @@
 <?php
 
-$conn = mysqli_connect('localhost','root','','mishit_db') or die('connection failed');
+$conn = mysqli_connect('localhost','root','','mishti_db') or die('connection failed');
 
 ?>

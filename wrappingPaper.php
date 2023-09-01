@@ -1,4 +1,27 @@
+<?php
+// Start or resume the session
+session_start();
+$conn = mysqli_connect('localhost','root','','mishti_db') or die('connection failed');
+// Fetch data from the 'wrappers' table
+$sql = "SELECT wrapperID, image FROM wrappers";
+$result = $conn->query($sql);
 
+// Check if there are any rows in the result set
+if ($result->num_rows > 0) {
+    $optionsHtml = '';
+    while ($row = $result->fetch_assoc()) {
+        $wrapperID = $row['wrapperID'];
+        $image = $row['image'];
+        $optionsHtml .= "<div class='wrappingPaperOption' data-value='$wrapperID'>";
+        $optionsHtml .= "<img src='uploaded_img/$image' alt='Option $wrapperID'>";
+        $optionsHtml .= "</div>";
+    }
+} else {
+    // Handle the case when there are no records in the database
+    $optionsHtml = '<p>No wrapping paper options available.</p>';
+}
+
+?>
 
 
 <!doctype html>
@@ -51,34 +74,33 @@
           <h1>Choose wrapping paper:</h1>
           <br>
 
-          <form id="wrappingPaperForm">
+          <form id="wrappingPaperForm" method="POST">
             <div id="wrappingOptionsContainer">
-              <div class="wrappingPaperOption">
-                <img src="img/wrappingPaper1.png">
-                <input type="radio" class="myRadioButton" id="option1" name="options" value="option1">
-              </div>
-              <div class="wrappingPaperOption">
-                <img src="img/wrappingPaper2.png">
-                <input type="radio" class="myRadioButton" id="option2" name="options" value="option2">
-              </div>
-              <div class="wrappingPaperOption">
-                <img src="img/wrappingPaper3.png">
-                <input type="radio" class="myRadioButton" id="option3" name="options" value="option3">
-              </div>
-              <div class="wrappingPaperOption">
-                <img src="img/wrappingPaper4.png">
-                <input type="radio" class="myRadioButton" id="option4" name="options" value="option4">
-              </div>
+                <?php echo $optionsHtml; ?>
             </div>
-
             <br>
             <div class="bottomButtonContainer">
-              <a href="cart.php" class="altButton">back</a>
-              <a href="payment.php" class="myButton">Next</a>
-              <!--input type="submit" value="Next" class="myButton"-->
+                <a href="cart.php" class="altButton">back</a>
+                <a href="payment.php" class="myButton">next</a>
+                <!--<input type="submit" value="Next" class="myButton">-->
             </div>
-          
           </form>
+
+          <script>
+              const wrappingOptions = document.querySelectorAll('.wrappingPaperOption');
+
+              wrappingOptions.forEach(option => {
+                  option.addEventListener('click', () => {
+                      // Remove the 'selected' class from all options
+                      wrappingOptions.forEach(opt => opt.classList.remove('selected'));
+                      // Add the 'selected' class to the clicked option
+                      option.classList.add('selected');
+                      // Set the selected value in the form input field
+                      document.getElementById('wrappingPaperSelection').value = option.getAttribute('data-value');
+                  });
+              });
+          </script>
+
         </div>
       </div>
 

@@ -1,6 +1,6 @@
 <?php
     session_start();
-    if($_SESSION['type'] == 'admin') {header('location:admin.php');}
+    if($_SESSION['type'] == 'admin') {header('location:admin_page.php');}
     else if ($_SESSION['type'] != 'user') {header('location:login.php');}
 ?>
 
@@ -44,14 +44,12 @@
             <div id="userImgInfo">
               <img src="img/iconDashboard.png" id="userImg">
               <div id="userInfo">
-                <h1>Full Name</h1>
-                <h2>email@gmail.com</h2>
-                <h2>Address, Road, Dhaka</h2>
-                <h2>01987654321</h2>
+                <h1><?php echo $_SESSION['user_name']; ?></h1>
+                <h2><?php echo $_SESSION['user_email']; ?></h2>
               </div>
             </div>
             <div id="userEditButtonContainer">
-              <button class="myButton">EDIT profile</button>
+              <a href="updateProfile.php" class="myButton">edit profile</a>
               <button class="myButton" id="logoutButton">Logout</button>
             </div>
           </div>
@@ -61,29 +59,20 @@
           <h1>My Orders:</h1>
           <div class="dashboardList">
 
+            <!-- OLD Hardcoded Orders List
+
             <div class="dashboardListEntry" id="roshogolla">
               <div class="dashboardListDetails">
                 <div class="dashboardListSerial">1.</div>
                 <div class="dashboardListText">
-                  <h1 id="productNameLabel">15/08/2023 18:00</h1>
-                  <h2 id="productPriceLabel">13,000tk</h2>
+                  <h1 id="productNameLabel">15/08/2023</h1>
+                  <h2 id="quantityPriceLabel">35kg: 13,000tk</h2>
+                  <h2 id="addressLabel">House, Road, Address</h2>
+                  <h2 id="phoneNumberLabel">01987654321</h2>
                 </div>
               </div>
               <div class="dashboardListButtons">
-                <button class="myButton" id="editButton">Details</button>
-              </div>
-            </div>
-
-            <div class="dashboardListEntry" id="kalaJaam">
-              <div class="dashboardListDetails">
-                <div class="dashboardListSerial">2.</div>
-                <div class="dashboardListText">
-                  <h1 id="productNameLabel">15/08/2023 19:00</h1>
-                  <h2 id="productPriceLabel">500tk</h2>
-                </div>
-              </div>
-              <div class="dashboardListButtons">
-                <button class="myButton" id="editButton">Details</button>
+                <h1 id="statusLabel"><i>Pending</i></h1>
               </div>
             </div>
 
@@ -125,7 +114,52 @@
                 <button class="myButton" id="editButton">Details</button>
               </div>
             </div>
-            
+
+            -->
+
+            <?php
+              $conn = mysqli_connect('localhost','root','','mishti_db') or die('connection failed');
+              $currentUser=$_SESSION['user_id'];
+              $sql = "SELECT orderID, userID, userName, address, phone, quantity, total, paystatus, date 
+                      FROM orders WHERE userID=$currentUser ORDER BY date DESC";
+              $result = $conn->query($sql);
+
+              $serialNumber = 1;
+
+              if ($result->num_rows > 0) {
+                  while ($row = $result->fetch_assoc()) {
+                      $orderID = $row['orderID'];
+                      $date = $row['date'];
+                      $quantity = $row['quantity'];
+                      $total = $row['total'];
+                      $address = $row['address'];
+                      $phone = $row['phone'];
+                      $status = $row['paystatus'];
+
+                      echo '<div class="dashboardListEntry" id="' . $orderID . '">';
+                      echo '<div class="dashboardListDetails">';
+                      echo '<div class="dashboardListSerial">' . sprintf('%02d', $serialNumber) . '</div>';
+                      echo '<div class="dashboardListText">';
+                      echo '<h1 id="productNameLabel">' . $date . '</h1>';
+                      echo '<h2 id="quantityPriceLabel">' . $quantity . 'kg: <b><i>' . number_format($total) . 'tk</i></b></h2>';
+                      echo '<h2 id="addressLabel">' . $address . '</h2>';
+                      echo '<h2 id="phoneNumberLabel">' . $phone . '</h2>';
+                      echo '</div>';
+                      echo '</div>';
+                      echo '<div class="dashboardListButtons">';
+                      echo '<h3 id="statusLabel"><i>' . $status . '</i></h3>';
+                      echo '</div>';
+                      echo '</div>';
+
+                      $serialNumber++;
+                  }
+              } else {
+                  echo '<p>No orders found.</p>';
+              }
+
+              // Close the database connection
+              $conn->close();
+            ?>            
           </div>
 
 

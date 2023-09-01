@@ -15,6 +15,20 @@ body, html {
   scroll-behavior: smooth;
 }
 
+*::-webkit-scrollbar{
+  height: .5rem;
+  width: .8rem;
+}
+
+*::-webkit-scrollbar-track{
+  background-color: #FFDFC2;
+}
+
+*::-webkit-scrollbar-thumb{
+  background-color: #D67F12;
+}
+
+
 .myContainer {
   display: flex;
   flex-direction: column;
@@ -105,10 +119,6 @@ nav{
   z-index: 1000;
 }
 
-.navLogo {
-  max-height: 50px;
-}
-
 .navLinks {
   list-style: none;
   display: flex;
@@ -126,6 +136,18 @@ nav{
   font-weight: 700;
   color:#6B180C;
 }
+
+.logo{
+  margin: 0;
+  padding: 0;
+  height: 50px;
+  width: 200px;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-image: url("img/logo.png");
+}
+
 
 .navLinks a:Hover {
   color:#D67F12;

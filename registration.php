@@ -8,7 +8,7 @@ if(isset($_POST['submit'])){
    $email = mysqli_real_escape_string($conn, $_POST['email']);
    $pass = mysqli_real_escape_string($conn, md5($_POST['password']));
    $cpass = mysqli_real_escape_string($conn, md5($_POST['cpassword']));
-   $user_type = $_POST['user_type'];
+   $type = $_POST['type'];
 
    $select_users = mysqli_query($conn, "SELECT * FROM `users` WHERE email = '$email'") or die('query failed');
 
@@ -18,7 +18,7 @@ if(isset($_POST['submit'])){
       if($pass != $cpass){
          $message[] = 'Confirmed password does not match!';
       }else{
-         mysqli_query($conn, "INSERT INTO `users`(name, email, password, user_type) VALUES('$name', '$email', '$cpass', '$user_type')") or die('query failed');
+         mysqli_query($conn, "INSERT INTO `users`(name, email, password, type) VALUES('$name', '$email', '$cpass', '$type')") or die('query failed');
          $message[] = 'Registered successfully!';
          header('location:login.php');
       }
@@ -77,7 +77,7 @@ if(isset($_POST['submit'])){
                   <input type="email" name="email" placeholder="Email Address" required class="box">
                   <input type="password" name="password" placeholder="Password" required class="box">
                   <input type="password" name="cpassword" placeholder="Confirm Password" required class="box">
-                  <select name="user_type" class="box">
+                  <select name="type" class="box">
                      <option value="user">User</option>
                      <option value="admin">Admin</option>
                   </select>
